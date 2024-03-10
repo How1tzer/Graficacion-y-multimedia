@@ -1,39 +1,37 @@
-//Declarar variables aburrido como siempre
-let x, y; 
-let speedX, speedY; 
-let diameter = 50; 
+let circles = []; // Arreglo para almacenar las esferas
 
 function setup() {
-  //Canvas 
-  createCanvas(800, 800); 
-  //Incio de posicion :P
-  x = width / 3; 
-  y = height / 9; 
-
-  //Velocidad del Circulo
-  speedX = 1; 
-  speedY = 1; 
+  createCanvas(800, 800);
 }
 
 function draw() {
-  background(30); 
+  background(30);
 
-  // Mueve el círculo
-  x += speedX;
-  y += speedY;
+  //Dibujador de esferas-inador
+  for (let i = 0; i < circles.length; i++) {
+    let circle = circles[i];
+    ellipse(circle.x, circle.y, circle.diameter);
+    circle.x += circle.speedX;
+    circle.y += circle.speedY;
 
-  // Rebote Horizontal
-  if (x + diameter / 2 >= width || x - diameter / 2 <= 0) {
-    speedX *= -1; 
+    // La formula de colision que encontre en un foro
+    if (circle.x + circle.diameter / 2 >= width || circle.x - circle.diameter / 2 <= 0) {
+      circle.speedX *= -1;
+    }
+    if (circle.y + circle.diameter / 2 >= height || circle.y - circle.diameter / 2 <= 0) {
+      circle.speedY *= -1;
+    }
   }
+  console.log(circles);
+}
 
-  // Rebote Vertica;
-  if (y + diameter / 2 >= height || y - diameter / 2 <= 0) {
-    speedY *= -1; 
-  }
-
-  //Circulo
-  ellipse(x, y, diameter);
-
-  frameRate(60);
+function mouseClicked() {
+  let newCircle = {
+    x: mouseX,
+    y: mouseY,
+    diameter: 50,
+    speedX: random(-2, 2),
+    speedY: random(-2, 2)
+  };
+  circles.push(newCircle);
 }
