@@ -6,6 +6,7 @@ function setup() {
 
 function draw() {
   background(30);
+  frameRate(60);
 
   //Dibujador de esferas-inador
   for (let i = 0; i < circles.length; i++) {
@@ -20,6 +21,19 @@ function draw() {
     }
     if (circle.y + circle.diameter / 2 >= height || circle.y - circle.diameter / 2 <= 0) {
       circle.speedY *= -1;
+    }
+
+    // Detección de colisión entre pelotas
+    for (let j = i + 1; j < circles.length; j++) {
+      let otherCircle = circles[j];
+      let distance = dist(circle.x, circle.y, otherCircle.x, otherCircle.y);
+      if (distance < circle.diameter / 2 + otherCircle.diameter / 2) {
+        let angle = atan2(otherCircle.y - circle.y, otherCircle.x - circle.x);
+        circle.speedX = -cos(angle);
+        circle.speedY = -sin(angle);
+        otherCircle.speedX = cos(angle);
+        otherCircle.speedY = sin(angle);
+      }
     }
   }
   console.log(circles);
