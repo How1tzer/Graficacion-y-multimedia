@@ -140,12 +140,23 @@ class Ball {
   }
   
   hitsPaddle(paddle) {
-    if (this.x - this.radius < paddle.x + paddle.w &&
-        this.x + this.radius > paddle.x &&
-        this.y - this.radius < paddle.y + paddle.h &&
-        this.y + this.radius > paddle.y) {
-      return true;
+    let topEdge = paddle.y;
+    let bottomEdge = paddle.y + paddle.h;
+    let leftEdge = paddle.x;
+    let rightEdge = paddle.x + paddle.w;
+
+    // Verificar si la pelota está dentro de los límites del paddle
+    if (this.x + this.radius >= leftEdge && 
+        this.x - this.radius <= rightEdge && 
+        this.y + this.radius >= topEdge && 
+        this.y - this.radius <= bottomEdge) {
+      // Verificar si la pelota golpea la parte superior o inferior del paddle
+      if ((this.y - this.radius <= bottomEdge && this.vy > 0) || 
+          (this.y + this.radius >= topEdge && this.vy < 0)) {
+        return true;
+      }
     }
     return false;
-  }
+}
+
 }
