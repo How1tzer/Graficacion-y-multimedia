@@ -5,7 +5,7 @@ let leftScore = 0;
 let rightScore = 0;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(1200, 800);
   leftPaddle = new Paddle(true);
   rightPaddle = new Paddle(false);
   ball = new Ball();
@@ -42,12 +42,12 @@ function draw() {
 function drawDecorations() {
   // Línea central
   stroke(255);
-  strokeWeight(2);
+  strokeWeight(3);
   line(width / 2, 0, width / 2, height);
 
   // Círculos
   noFill();
-  strokeWeight(2);
+  strokeWeight(4);
   stroke(255);
   ellipse(width / 2, height / 2, 100);
   ellipse(width / 2, height / 2, 10);
@@ -81,8 +81,8 @@ function checkCollisions() {
 
 class Paddle {
   constructor(isLeft) {
-    this.w = 10;
-    this.h = 80;
+    this.w = 20;
+    this.h = 160;
     this.y = height / 2 - this.h / 2;
     this.isLeft = isLeft;
     this.x = isLeft ? 20 : width - 30;
@@ -91,6 +91,7 @@ class Paddle {
   }
   
   show() {
+    noStroke(); // Eliminar los bordes
     fill(this.color); 
     rect(this.x, this.y, this.w, this.h, 10);
   }
@@ -114,7 +115,7 @@ class Paddle {
 
 class Ball {
   constructor() {
-    this.radius = 10;
+    this.radius = 20;
     this.reset();
   }
   
@@ -131,8 +132,7 @@ class Ball {
   reset() {
     this.x = width / 2;
     this.y = height / 2;
-    // Fijamos las velocidades de rebote aquí
-    this.vx = random(4, 4); // Cambié el rango para hacerlo más rápido
+    this.vx = random(6, 5); // Cambié el rango para hacerlo más rápido
     this.vy = random(-3, 3);
     if (random() > 0.5) {
       this.vx *= -1;
