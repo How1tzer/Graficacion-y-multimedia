@@ -1,3 +1,6 @@
+//Codigo de :
+//>Eduardo Marges Gonzalez de la llave
+//>Jose Manuel Benitez Perez
 let leftPaddle;
 let rightPaddle;
 let ball;
