@@ -145,16 +145,16 @@ class Ball {
     let leftEdge = paddle.x;
     let rightEdge = paddle.x + paddle.w;
 
-    // Verificar si la pelota está dentro de los límites del paddle
-    if (this.x + this.radius >= leftEdge && 
-        this.x - this.radius <= rightEdge && 
-        this.y + this.radius >= topEdge && 
-        this.y - this.radius <= bottomEdge) {
-      // Verificar si la pelota golpea la parte superior o inferior del paddle
-      if ((this.y - this.radius <= bottomEdge && this.vy > 0) || 
-          (this.y + this.radius >= topEdge && this.vy < 0)) {
-        return true;
+    if (this.x + this.radius > leftEdge && 
+        this.x - this.radius < rightEdge && 
+        this.y + this.radius > topEdge && 
+        this.y - this.radius < bottomEdge) {
+      // Verificar la dirección de la pelota
+      if ((this.y - this.vy > bottomEdge && this.vy > 0) || 
+          (this.y - this.vy < topEdge && this.vy < 0)) {
+        return false; // Ignorar la colisión si la pelota se está alejando del paddle
       }
+      return true;
     }
     return false;
 }
