@@ -1,51 +1,151 @@
-let circles = []; // Arreglo para almacenar las esferas
+let leftPaddle;
+let rightPaddle;
+let ball;
+let leftScore = 0;
+let rightScore = 0;
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(600, 400);
+  leftPaddle = new Paddle(true);
+  rightPaddle = new Paddle(false);
+  ball = new Ball();
 }
 
 function draw() {
-  background(30);
+  background(0);
+  //fps
   frameRate(60);
+  //Cancha
+  drawDecorations();
 
-  //Dibujador de esferas-inador
-  for (let i = 0; i < circles.length; i++) {
-    let circle = circles[i];
-    ellipse(circle.x, circle.y, circle.diameter);
-    circle.x += circle.speedX;
-    circle.y += circle.speedY;
+  // Tablero
+  textAlign(CENTER);
+  textSize(32);
+  fill(255);
+  text(leftScore, width * 0.25, 50);
+  text(rightScore, width * 0.75, 50);
 
-    // La formula de colision que encontre en un foro
-    if (circle.x + circle.diameter / 2 >= width || circle.x - circle.diameter / 2 <= 0) {
-      circle.speedX *= -1;
-    }
-    if (circle.y + circle.diameter / 2 >= height || circle.y - circle.diameter / 2 <= 0) {
-      circle.speedY *= -1;
-    }
+  //jugadores y pelota
+  leftPaddle.show();
+  rightPaddle.show();
+  
+  leftPaddle.update();
+  rightPaddle.update();
+  
+  ball.show();
+  ball.update();
+  
+  checkCollisions();
 
-    // Detección de colisión entre pelotas
-    for (let j = i + 1; j < circles.length; j++) {
-      let otherCircle = circles[j];
-      let distance = dist(circle.x, circle.y, otherCircle.x, otherCircle.y);
-      if (distance < circle.diameter / 2 + otherCircle.diameter / 2) {
-        let angle = atan2(otherCircle.y - circle.y, otherCircle.x - circle.x);
-        circle.speedX = -cos(angle);
-        circle.speedY = -sin(angle);
-        otherCircle.speedX = cos(angle);
-        otherCircle.speedY = sin(angle);
+}
+
+function drawDecorations() {
+  // Línea central
+  stroke(255);
+  strokeWeight(2);
+  line(width / 2, 0, width / 2, height);
+
+  // Círculos
+  noFill();
+  strokeWeight(2);
+  stroke(255);
+  ellipse(width / 2, height / 2, 100);
+  ellipse(width / 2, height / 2, 10);
+
+}
+
+///////////////
+///Colisiones//
+///////////////
+function checkCollisions() {
+  
+  if (ball.hitsPaddle(leftPaddle) || ball.hitsPaddle(rightPaddle)) {
+    ball.vx *= -1;
+  }
+  
+  if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= height) {
+    ball.vy *= -1;
+  }
+  
+  // Puntuación
+  if (ball.x - ball.radius <= 0) {
+    // El lado derecho anota
+    rightScore++;
+    ball.reset();
+  } else if (ball.x + ball.radius >= width) {
+    // El lado izquierdo anota
+    leftScore++;
+    ball.reset();
+  }
+}
+
+class Paddle {
+  constructor(isLeft) {
+    this.w = 10;
+    this.h = 80;
+    this.y = height / 2 - this.h / 2;
+    this.isLeft = isLeft;
+    this.x = isLeft ? 20 : width - 30;
+    this.speed = 5;
+    this.color = isLeft ? '#ff7c70' : '#98c0f6';
+  }
+  
+  show() {
+    fill(this.color); 
+    rect(this.x, this.y, this.w, this.h, 10);
+  }
+  
+  update() {
+    if (this.isLeft) {
+      if (keyIsDown(87) && this.y > 0) {
+        this.y -= this.speed;
+      } else if (keyIsDown(83) && this.y < height - this.h) {
+        this.y += this.speed;
+      }
+    } else {
+      if (keyIsDown(UP_ARROW) && this.y > 0) {
+        this.y -= this.speed;
+      } else if (keyIsDown(DOWN_ARROW) && this.y < height - this.h) {
+        this.y += this.speed;
       }
     }
   }
-  console.log(circles);
 }
 
-function mouseClicked() {
-  let newCircle = {
-    x: mouseX,
-    y: mouseY,
-    diameter: 50,
-    speedX: random(-2, 2),
-    speedY: random(-2, 2)
-  };
-  circles.push(newCircle);
+class Ball {
+  constructor() {
+    this.radius = 10;
+    this.reset();
+  }
+  
+  show() {
+    fill(255);
+    ellipse(this.x, this.y, this.radius * 2);
+  }
+  
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+  }
+  
+  reset() {
+    this.x = width / 2;
+    this.y = height / 2;
+    // Fijamos las velocidades de rebote aquí
+    this.vx = random(4, 4); // Cambié el rango para hacerlo más rápido
+    this.vy = random(-3, 3);
+    if (random() > 0.5) {
+      this.vx *= -1;
+    }
+  }
+  
+  hitsPaddle(paddle) {
+    if (this.x - this.radius < paddle.x + paddle.w &&
+        this.x + this.radius > paddle.x &&
+        this.y - this.radius < paddle.y + paddle.h &&
+        this.y + this.radius > paddle.y) {
+      return true;
+    }
+    return false;
+  }
 }
