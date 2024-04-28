@@ -25,7 +25,6 @@ function drawCircle(xc, yc, r) {
     point(xc - y, yc - x);
 
     x++;
-    // Actualiza p
     if (p < 0) {
       p += 2 * x + 1;
     } else {
