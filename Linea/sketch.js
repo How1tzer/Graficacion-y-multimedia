@@ -5,15 +5,20 @@ let horaBarcelona = 0;
 let segundos = 0;
 
 function setup() {
-  createCanvas(600, 200);
+  createCanvas(600, 300); // Aumentamos la altura del lienzo para dejar espacio para los elementos debajo de los relojes
   
+  // Dibujar relojes
+  dibujarReloj(width / 4, height / 2, "La Paz", horaLaPaz, puntoPendiente);
+  dibujarReloj(width / 2, height / 2, "Ciudad de México", horaCDMX, dda);
+  dibujarReloj(width * 3 / 4, height / 2, "Barcelona", horaBarcelona, bresenham);
+
   // Crear input para la hora
   inputHora = createInput();
-  inputHora.position(20, 20);
+  inputHora.position(width+230, height +300); // Centramos el input horizontalmente y lo posicionamos 50 píxeles desde la parte inferior del lienzo
   
   // Crear botón para actualizar relojes
   let boton = createButton('Actualizar');
-  boton.position(inputHora.x + inputHora.width + 10, 20);
+  boton.position(inputHora.x + inputHora.width + 10, inputHora.y); // Posicionamos el botón al lado derecho del input
   boton.mousePressed(actualizarHoras);
 }
 
@@ -139,8 +144,26 @@ function secondTick() {
   segundos++;
   if (segundos >= 60) {
     segundos = 0;
+    // Incrementar los minutos cuando los segundos lleguen a 60
+    minuteTick();
   }
 }
 
-// Llamar a la función secondTick() cada segundo
+// Incrementar los minutos cada vez que los segundos lleguen a 60
+function minuteTick() {
+  // Incrementar los minutos
+  horaInput = (horaInput + 1) % 24;
+
+  // Actualizar los relojes
+  horaLaPaz = horaInput;
+  horaCDMX = (horaInput + 1) % 24; // Ciudad de México tiene 1 hora más
+  horaBarcelona = (horaInput + 8) % 24; // Barcelona tiene 8 horas más
+
+  // Verificar si es necesario incrementar la hora
+  if (horaInput >= 24) {
+    horaInput = 0;
+  }
+}
+
+// Llamada a la funcion que marca los segundos
 setInterval(secondTick, 1000);
