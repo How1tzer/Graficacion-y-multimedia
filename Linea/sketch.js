@@ -37,11 +37,11 @@ function setup() {
   
   // Crear input para la hora
   inputHora = createInput();
-  inputHora.position(window, inputY-20); // Centramos el input horizontalmente y lo posicionamos debajo de los relojes
+  inputHora.position(window, inputY +170); // Centramos el input horizontalmente y lo posicionamos debajo de los relojes
   
   // Crear botón para actualizar relojes
   let boton = createButton('Actualizar');
-  boton.position(window, inputY + inputHora.height); // Centramos el botón horizontalmente y lo posicionamos debajo del input
+  boton.position(window, inputY + inputHora.height +190); // Centramos el botón horizontalmente y lo posicionamos debajo del input
   boton.mousePressed(actualizarHoras);
 }
 
