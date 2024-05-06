@@ -59,16 +59,25 @@ function actualizarHoras() {
   let horaInput = inputHora.value().split(":");
   let hora = int(horaInput[0]);
   let minuto = int(horaInput[1]);
-  
+
+  // Verificar si la entrada es válida
+  if (isNaN(hora) || isNaN(minuto) || hora < 0 || hora > 23 || minuto < 0 || minuto > 59) {
+    alert("Por favor ingrese una hora válida en formato HH:MM.");
+    // Limpiar el input
+    inputHora.value("");
+    return; // Salir de la función si la entrada no es válida
+  }
+
   // Asignar horas y minutos a los relojes
   horaLaPaz = hora;
   horaCDMX = (hora + 1) % 24; // Ciudad de México tiene 1 hora más
   horaBarcelona = (hora + 8) % 24; // Barcelona tiene 8 horas más
-  
+
   minutosLaPaz = minuto;
   minutosCDMX = minuto;
   minutosBarcelona = minuto;
 }
+
 
 function obtenerMinutos() {
   return minute();
