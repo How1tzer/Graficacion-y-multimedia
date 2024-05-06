@@ -4,13 +4,15 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
+  background-color: black; /* Cambiamos el color de fondo del body a negro */
 }
 
 canvas {
   border-radius: 10px;
+  background-color: white; /* Cambiamos el color de fondo del lienzo a blanco */
 }
 
- input[type="text"] {
+input[type="text"] {
   justify-content: center;
   padding: 10px;
   font-size: 16px;
@@ -21,7 +23,7 @@ canvas {
 button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #4CAF50;
+  background-color: #047e08;
   color: white;
   border: none;
   border-radius: 5px;

@@ -8,21 +8,22 @@ let minutosBarcelona = 0;
 let segundos = 0;
 
 function setup() {
-  createCanvas(600, 400); // Aumentamos la altura del lienzo para dejar espacio para los elementos debajo de los relojes
+  //Canvas size 
+  createCanvas(600, 400); 
   
-  // Dibujar relojes
-  let offsetY = 160; // Desplazamiento vertical para dejar espacio para los títulos de los relojes
-  let relojHeight = 120; // Altura de los relojes
-  let relojY = height / 2 - relojHeight / 2; // Posición vertical de los relojes
+  // Posicion de los relojes
+  let offsetY = 160; 
+  let relojHeight = 120; 
+  let relojY = height / 2 - relojHeight / 2; 
 
    // Obtener la hora actual
    let horaActual = hour();
    let minutoActual = minute();
  
-   // Establecer los valores iniciales de las horas y minutos
+   // Horas y minutos
    horaLaPaz = horaActual;
-   horaCDMX = (horaActual + 1) % 24; // Ciudad de México tiene 1 hora más
-   horaBarcelona = (horaActual + 8) % 24; // Barcelona tiene 8 horas más
+   horaCDMX = (horaActual + 1) % 24; 
+   horaBarcelona = (horaActual + 8) % 24; 
    minutosLaPaz = minutoActual;
    minutosCDMX = minutoActual;
    minutosBarcelona = minutoActual;
@@ -31,17 +32,17 @@ function setup() {
   dibujarReloj(width / 2, relojY, "Ciudad de México", horaCDMX, minutosCDMX, dda);
   dibujarReloj(width * 3 / 4, relojY, "Barcelona", horaBarcelona, minutosBarcelona, bresenham);
 
-  // Calcular la posición central en el eje X para el input y el botón
+  //Reloj y input
   let centerX = width / 2;
-  let inputY = relojY + relojHeight + offsetY; // Posición vertical del input
+  let inputY = relojY + relojHeight + offsetY; 
   
-  // Crear input para la hora
+  // Input para la hora
   inputHora = createInput();
-  inputHora.position(window, inputY +170); // Centramos el input horizontalmente y lo posicionamos debajo de los relojes
+  inputHora.position(window, inputY +145); 
   
   // Crear botón para actualizar relojes
   let boton = createButton('Actualizar');
-  boton.position(window, inputY + inputHora.height +190); // Centramos el botón horizontalmente y lo posicionamos debajo del input
+  boton.position(window, inputY + inputHora.height +160); 
   boton.mousePressed(actualizarHoras);
 }
 
@@ -65,13 +66,13 @@ function actualizarHoras() {
     alert("Por favor ingrese una hora válida en formato HH:MM.");
     // Limpiar el input
     inputHora.value("");
-    return; // Salir de la función si la entrada no es válida
+    return; 
   }
 
   // Asignar horas y minutos a los relojes
   horaLaPaz = hora;
-  horaCDMX = (hora + 1) % 24; // Ciudad de México tiene 1 hora más
-  horaBarcelona = (hora + 8) % 24; // Barcelona tiene 8 horas más
+  horaCDMX = (hora + 1) % 24; 
+  horaBarcelona = (hora + 8) % 24; 
 
   minutosLaPaz = minuto;
   minutosCDMX = minuto;
@@ -86,11 +87,13 @@ function obtenerMinutos() {
 function dibujarReloj(x, y, titulo, hora, minutos, algoritmoDibujo) {
   textAlign(CENTER);
   textSize(18);
+  fill(0); 
+  textStyle(BOLD); 
   text(titulo, x, y - 60);
 
   let radio = 50;
   noFill();
-  stroke(0);
+  stroke(0); // Este stroke(0) se refiere al color del borde del reloj, no al texto
   strokeWeight(2);
   algoritmoDibujo(x, y, radio);
 
@@ -100,11 +103,14 @@ function dibujarReloj(x, y, titulo, hora, minutos, algoritmoDibujo) {
 
   dibujarManecilla(x, y, radio * 0.5, horasAngulo, 4, color(255, 0, 0));
   dibujarManecilla(x, y, radio * 0.8, minutosAngulo, 2, color(0, 0, 255));
-  dibujarManecilla(x, y, radio * 0.8, segundosAngulo, 1, color(0, 255, 0));
+  dibujarManecilla(x, y, radio * 0.8, segundosAngulo, 1, color(0, 0, 0));
 
   textSize(16);
   text(nf(hora, 2) + ':' + nf(minutos, 2), x, y + 80);
 }
+
+
+
 
 // Función para dibujar una manecilla
 function dibujarManecilla(x, y, longitud, angulo, grosor, color) {
